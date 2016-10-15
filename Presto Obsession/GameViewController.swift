@@ -49,8 +49,8 @@ class GameViewController: UIViewController {
             
             let skView = skViewOp!
             self.gameScene = GameScene(size: skView.bounds.size)
-            skView.showsFPS = true
-            skView.showsNodeCount = true
+            skView.showsFPS = false
+            skView.showsNodeCount = false
             skView.ignoresSiblingOrder = true
             gameScene.scaleMode = .resizeFill
             skView.presentScene(gameScene)
@@ -146,11 +146,7 @@ class GameViewController: UIViewController {
                                                               endFunc: endFunc)
             break
         case GameElement.tempo:
-            let tempoMarkingSprite = TempoMarkingSprite(tempoMarking: self.gameModel.musicElements.currentBPM)
-            self.gameScene.staffNode.animateStaffElementNode(tempoMarkingSprite,
-                                                              pixelsPerSecond: pixelsPerSecondFromTempo(),
-                                                              midFunc: nil,
-                                                              endFunc: nil)
+            self.gameScene.staffNode.setTempo(self.gameModel.musicElements.currentBPM)
             break
         }
     }

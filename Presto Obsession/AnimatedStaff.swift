@@ -13,9 +13,6 @@ class AnimatedStaff: SKSpriteNode {
     
     private var ledgerLineSpace:CGFloat = 0.0
     private var staffTexture = SKTexture(imageNamed: "Music-Staff")
-    private var currentKeySignatureSprite:KeySignatureSprite? = nil
-    private var currentClefSprite:SKSpriteNode? = nil
-    private var currentTempoMarkingSprite:SKSpriteNode? = nil
     private var noteSprites:Set<NoteSprite> = Set()
     private var uniqueStaffElementNodes:[StaffElementType:StaffElementNode] = [:]
     private var notes:[StaffElementNode] = []
@@ -43,6 +40,11 @@ class AnimatedStaff: SKSpriteNode {
     func placeStaffElementNode(_ staffElementNode:StaffElementNode){
         introduceToStaff(staffElementNode)
         internalPlaceStaffElementNode(staffElementNode)
+    }
+    
+    func setTempo(_ newTempo:Int){
+        let convTempoSprite:TempoMarkingSprite = uniqueStaffElementNodes[StaffElementType.tempoMarking] as! TempoMarkingSprite
+        convTempoSprite.setTempo(newTempo)
     }
     
     func animateStaffElementNode(
@@ -151,6 +153,7 @@ class AnimatedStaff: SKSpriteNode {
         let actionMoveDone = SKAction.run(endFunc)
         sprite.run(SKAction.sequence([actionMove, actionMoveDone]))
     }
+    
     fileprivate func animateSpriteAcrossStaffMidPoint(_ sprite:SKSpriteNode, midPosition:CGPoint, endPosition:CGPoint, pixelsPerSecond:Double, midFunc: @escaping (Void)->(Void), endFunc:@escaping (Void) -> Void){
         animateSpriteAcrossStaff(sprite, endPosition: midPosition, pixelsPerSecond: pixelsPerSecond, endFunc: {
             midFunc()

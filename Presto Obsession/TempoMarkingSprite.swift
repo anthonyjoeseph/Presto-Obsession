@@ -12,6 +12,7 @@ import SpriteKit
 class TempoMarkingSprite:SKSpriteNode, StaffElementNode{
     
     fileprivate static let tempoXPosLedgerLines:CGFloat = 4
+    fileprivate var tempoLabel:SKLabelNode?
     
     init(tempoMarking:Int){
         super.init(texture: nil, color: UIColor.clear, size: CGSize(width: 1, height: 1))
@@ -24,14 +25,14 @@ class TempoMarkingSprite:SKSpriteNode, StaffElementNode{
         qNoteSprite.position = CGPoint(x: 0, y: 0)
         self.addChild(qNoteSprite)
         
-        let tempoLabel:SKLabelNode = SKLabelNode(fontNamed: "GothamBold")
-        tempoLabel.text = "= " + String(tempoMarking)
-        tempoLabel.fontColor = UIColor.black
-        tempoLabel.fontSize = 30
-        tempoLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
-        tempoLabel.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
-        tempoLabel.position = CGPoint(x: qNoteSprite.size.width, y: 0)
-        self.addChild(tempoLabel)
+        tempoLabel = SKLabelNode(fontNamed: "GothamBold")
+        tempoLabel?.text = "= " + String(tempoMarking)
+        tempoLabel?.fontColor = UIColor.black
+        tempoLabel?.fontSize = 30
+        tempoLabel?.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        tempoLabel?.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
+        tempoLabel?.position = CGPoint(x: qNoteSprite.size.width, y: 0)
+        self.addChild(tempoLabel!)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,6 +42,10 @@ class TempoMarkingSprite:SKSpriteNode, StaffElementNode{
     func positionOnStaff(_ staffSize: CGSize, ledgerLineSpace: CGFloat) -> CGPoint{
         let middlePosition = staffSize.height/2
         return CGPoint(x: TempoMarkingSprite.tempoXPosLedgerLines*ledgerLineSpace, y: middlePosition + (ledgerLineSpace * 5))
+    }
+    
+    func setTempo(_ newTempo:Int){
+        tempoLabel?.text = "= " + String(newTempo)
     }
     
     func acceptStaffDimensions(_ staffSize:CGSize, ledgerLineSpace:CGFloat){
