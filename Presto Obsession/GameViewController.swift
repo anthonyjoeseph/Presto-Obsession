@@ -25,8 +25,8 @@ class GameViewController: UIViewController {
     var gameModel:GameModel
     var gameScene:GameScene
     var isPlayingGame:Bool
+    var previousNote:Note = Note(pitch:Pitch(absolutePitch:0), rhythm:Rhythm.quarter)
     
-    var highScoreScene:HighScoreScene?
     var currentLetterIndex:Int = 0
     
     var audioSounds:Dictionary<Int, SystemSoundID>
@@ -43,8 +43,12 @@ class GameViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         if(self.isPlayingGame){
-            let scoreUpdatedFunc = {self.gameScene.setScoreText(String(self.gameModel.getScore()))}
-            let highScoreUpdatedFunc = {self.gameScene.setScoreText(String(self.gameModel.getHighScore()))}
+            let scoreUpdatedFunc = {
+                self.gameScene.setScoreText(String(self.gameModel.getScore()))
+            }
+            let highScoreUpdatedFunc = {
+                self.gameScene.setHighScoreText(String(self.gameModel.getHighScore()))
+            }
             self.gameModel = GameModel(difficultyLevel: self.difficultyLevel, updateStaffWithGameElement: self.updateStaffWithGameElement, areNotesCleared: self.areNotesCleared, scoreUpdated: scoreUpdatedFunc, highScoreUpdated: highScoreUpdatedFunc)
             
             let skView = skViewOp!
@@ -54,6 +58,8 @@ class GameViewController: UIViewController {
             skView.ignoresSiblingOrder = true
             gameScene.scaleMode = .resizeFill
             skView.presentScene(gameScene)
+            
+            self.gameModel.initializeScores()
             
             
             self.countdownView?.timerOverFunc = {self.gameModel.resetTimer()}
@@ -172,15 +178,36 @@ class GameViewController: UIViewController {
         let incrementsFromMiddle:Int = clef.incrementsFromMiddle(note.pitch, keySignature: keySignature)
         
         let ledgerLines:LedgerLines? = clef.ledgerLines(note.pitch, keySignature: keySignature)
-        let noteSprite = NoteSprite(note: note, incrementsFromMiddle: incrementsFromMiddle, ledgerLines:ledgerLines)
+        let roughNoteWidth = CGFloat(30)
+        let endXPosition:CGFloat = self.gameScene.noteZoneFrame().minX - roughNoteWidth
+        let noteSprite = NoteSprite(note: note, incrementsFromMiddle: incrementsFromMiddle, ledgerLines:ledgerLines, endXPosition: endXPosition)
         let isStemUp = clef.isStemUp(note.pitch, keySignature: keySignature)
         noteSprite.addStem(isStemUp)
-        noteSprite.addAccidental(keySignature.nonSolfegAccidental(note.pitch))
+        if(addCourtesyNatural(currentNote: note)){
+            noteSprite.addAccidental(Accidental.Natural)
+        }else{
+            noteSprite.addAccidental(keySignature.nonSolfegAccidental(note.pitch))
+        }
         if(self.difficultyLevel == DifficultyLevel.beginner){
             noteSprite.addLetter(Keyboard.letterIfIvory(keySignature.relativeIvoryPitch(note.pitch))!, isStemInTheWay: !isStemUp)
         }
         
         return noteSprite
+    }
+    
+    private func addCourtesyNatural(currentNote: Note) -> Bool{
+        let keySignature = self.gameModel.musicElements.currentKeySignature
+        let currentPitch = currentNote.pitch
+        let currentAccidental:Accidental = keySignature.nonSolfegAccidental(currentPitch)
+        let previousPitch = self.previousNote.pitch
+        let previousAccidental:Accidental = keySignature.nonSolfegAccidental(previousPitch)
+        
+        let currentRelWhite = keySignature.relativeIvoryPitch(currentPitch)
+        let previousRelWhite = keySignature.relativeIvoryPitch(previousPitch)
+        
+        self.previousNote = currentNote
+        
+        return currentRelWhite == previousRelWhite && currentAccidental == Accidental.None && (previousAccidental == Accidental.Flat || previousAccidental == Accidental.Sharp)
     }
     
     fileprivate func createKeySignatureSprite(_ keySignature:MajorKeySignature, clef:Clef, isNaturals:Bool) -> KeySignatureSprite{
@@ -214,31 +241,18 @@ class GameViewController: UIViewController {
         for pitch:Pitch in pitches{
             playSound(pitch)
         }
-        if(self.isPlayingGame){
-            for noteSprite:NoteSprite in self.gameScene.staffNode.currentNoteSprites(){
-                let relativeSpritePosition = self.gameScene.convert(noteSprite.position, from: self.gameScene.staffNode)
-                if(self.gameScene.noteZoneContainsPoint(relativeSpritePosition)){
-                    if(pitches.contains(noteSprite.note.pitch)){
-                        self.gameModel.updateScoreWithCorrectNote()
-                        self.gameScene.staffNode.removeNoteSprite(noteSprite)
-                    }else{
-                        self.gameModel.updateScoreWithIncorrectNote()
-                    }
+        for noteSprite:NoteSprite in self.gameScene.staffNode.currentNoteSprites(){
+            let relativeSpritePosition = self.gameScene.convert(noteSprite.position, from: self.gameScene.staffNode)
+            if(self.gameScene.noteZoneContainsPoint(relativeSpritePosition)){
+                if(pitches.contains(noteSprite.note.pitch)){
+                    self.gameModel.updateScoreWithCorrectNote()
+                    self.gameScene.staffNode.removeNoteSprite(noteSprite)
+                }else{
+                    self.gameModel.updateScoreWithIncorrectNote()
                 }
-            }
-            self.gameScene.pressNoteZone()
-        }else{
-            if let thePitch = pitches.first {
-                let letterFromKeyboard:PitchLetter = Keyboard.letterIfIvory(self.gameModel.musicElements.currentKeySignature.relativeIvoryPitch(thePitch))!
-                self.highScoreScene?.addLetter(letterFromKeyboard.rawValue)
-                
-                if(self.currentLetterIndex == 2){
-                    Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(GameViewController.transitionToHighScoreViewController), userInfo: nil, repeats: false)
-                }
-                
-                self.currentLetterIndex += 1
             }
         }
+        self.gameScene.pressNoteZone()
     }
     
     fileprivate func playSound(_ pitch:Pitch){
@@ -246,9 +260,9 @@ class GameViewController: UIViewController {
         AudioServicesPlaySystemSound(systemSound)
     }
     
-    @objc fileprivate func transitionToHighScoreViewController(){
+    fileprivate func transitionToHighScoreViewController(){
         let gameData = GamePersistence()
-        gameData.storeNewScore(self.gameModel.getScore(), name: self.highScoreScene!.nameFromLetters())
+        gameData.storeNewScore(self.gameModel.getScore(), name: "nil")
         self.performSegue(withIdentifier: "GameOver", sender: self)
     }
     
@@ -257,15 +271,7 @@ class GameViewController: UIViewController {
     func gameOver(){
         self.isPlayingGame = false
         self.gameModel.stopTimer()
-        
-        let skView = skViewOp!
-        let highScoreScene = HighScoreScene(size: skView.bounds.size)
-        highScoreScene.scaleMode = .resizeFill
-        skView.presentScene(highScoreScene)
-        self.highScoreScene = highScoreScene
-        
-        self.keyboardView?.keysHaveLetters = true
-        self.keyboardView?.setNeedsLayout()
-        self.keyboardView?.layoutIfNeeded()
+    
+        transitionToHighScoreViewController()
     }
 }

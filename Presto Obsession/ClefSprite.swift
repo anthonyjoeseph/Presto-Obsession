@@ -39,10 +39,10 @@ class ClefSprite: SKSpriteNode, StaffElementNode{
         
         let clefYOffset:CGFloat
         if self.isTrebleClef {
-            clefYOffset = -27
+            clefYOffset = 0
         }else{
             self.anchorPoint = CGPoint(x: 0.5, y: 0.4)
-            clefYOffset = 8
+            clefYOffset = 0
         }
         
         let middlePosition = staffSize.height/2

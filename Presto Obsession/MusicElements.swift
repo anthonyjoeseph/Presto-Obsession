@@ -135,8 +135,11 @@ class MusicElements:NSObject{
         self.currentKeySignature = MajorKeySignature(keyTitleLetter: newKeyLetter, keyTitleType: newKeyType)!
     }
     
-    func increaseBPM() -> Int{
-        self.currentBPM += 5
-        return self.currentBPM
+    func increaseBPM(){
+        if(self.difficultyLevel == DifficultyLevel.beginner){
+            self.currentBPM += 5
+        }else{
+            self.currentBPM += 10
+        }
     }
 }

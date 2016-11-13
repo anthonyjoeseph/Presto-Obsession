@@ -61,7 +61,25 @@ class NoteAndClefState:GameCountState{
     }
     
     func isWaiting() -> Bool{
-        if(noteCountSinceTempoChange >= 20){
+        var shouldStopWaiting = false
+        switch (self.stateMachine!.difficultyLevel){
+        case DifficultyLevel.beginner:
+            if(noteCountSinceTempoChange >= 20){
+                shouldStopWaiting = true
+            }
+            break
+        case DifficultyLevel.intermediate:
+            if(noteCountSinceTempoChange  >= 20){
+                shouldStopWaiting = true
+            }
+            break
+        case DifficultyLevel.expert:
+            if(noteCountSinceTempoChange >= 10){
+                shouldStopWaiting = true
+            }
+            break
+        }
+        if(shouldStopWaiting){
             noteCountSinceTempoChange = 0
             self.stateMachine!.changeState(CountState.tempoChangeState)
             return true

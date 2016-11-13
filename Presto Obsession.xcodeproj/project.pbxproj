@@ -21,8 +21,6 @@
 		95ABF0401DB2C3F900F0BF4D /* GamePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ABEFC61DB2C3F900F0BF4D /* GamePersistence.swift */; };
 		95ABF0411DB2C3F900F0BF4D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ABEFC71DB2C3F900F0BF4D /* GameScene.swift */; };
 		95ABF0421DB2C3F900F0BF4D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ABEFC81DB2C3F900F0BF4D /* GameViewController.swift */; };
-		95ABF0431DB2C3F900F0BF4D /* HighScoreScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ABEFC91DB2C3F900F0BF4D /* HighScoreScene.swift */; };
-		95ABF0441DB2C3F900F0BF4D /* HighScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ABEFCA1DB2C3F900F0BF4D /* HighScoreViewController.swift */; };
 		95ABF0451DB2C3F900F0BF4D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95ABEFCB1DB2C3F900F0BF4D /* Images.xcassets */; };
 		95ABF0461DB2C3F900F0BF4D /* KeyBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ABEFCC1DB2C3F900F0BF4D /* KeyBase.swift */; };
 		95ABF0471DB2C3F900F0BF4D /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ABEFCD1DB2C3F900F0BF4D /* Keyboard.swift */; };
@@ -174,8 +172,6 @@
 		95ABEFC61DB2C3F900F0BF4D /* GamePersistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamePersistence.swift; sourceTree = "<group>"; };
 		95ABEFC71DB2C3F900F0BF4D /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		95ABEFC81DB2C3F900F0BF4D /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		95ABEFC91DB2C3F900F0BF4D /* HighScoreScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScoreScene.swift; sourceTree = "<group>"; };
-		95ABEFCA1DB2C3F900F0BF4D /* HighScoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScoreViewController.swift; sourceTree = "<group>"; };
 		95ABEFCB1DB2C3F900F0BF4D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		95ABEFCC1DB2C3F900F0BF4D /* KeyBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBase.swift; sourceTree = "<group>"; };
 		95ABEFCD1DB2C3F900F0BF4D /* Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
@@ -353,7 +349,6 @@
 				95ABEFD21DB2C3F900F0BF4D /* MainMenuViewController.swift */,
 				95ABEFC81DB2C3F900F0BF4D /* GameViewController.swift */,
 				95ABEFC31DB2C3F900F0BF4D /* CountdownView.swift */,
-				95ABEFCA1DB2C3F900F0BF4D /* HighScoreViewController.swift */,
 				95ABF0B21DB2C82100F0BF4D /* Game Model */,
 				95ABF0B31DB2C8B400F0BF4D /* SpriteKit Music */,
 				95ABF0B41DB2C8C400F0BF4D /* UIKit Music */,
@@ -517,7 +512,6 @@
 		95ABF0B31DB2C8B400F0BF4D /* SpriteKit Music */ = {
 			isa = PBXGroup;
 			children = (
-				95ABEFC91DB2C3F900F0BF4D /* HighScoreScene.swift */,
 				95ABEFC71DB2C3F900F0BF4D /* GameScene.swift */,
 				95ABEFC01DB2C3F900F0BF4D /* AnimatedStaff.swift */,
 				95ABEFD11DB2C3F900F0BF4D /* KeySignatureSprite.swift */,
@@ -862,7 +856,6 @@
 				95ABF0461DB2C3F900F0BF4D /* KeyBase.swift in Sources */,
 				95ABF03D1DB2C3F900F0BF4D /* CountdownView.swift in Sources */,
 				95ABF0501DB2C3F900F0BF4D /* NoteAndClefState.swift in Sources */,
-				95ABF0441DB2C3F900F0BF4D /* HighScoreViewController.swift in Sources */,
 				95ABF03A1DB2C3F900F0BF4D /* AnimatedStaff.swift in Sources */,
 				95ABF0471DB2C3F900F0BF4D /* Keyboard.swift in Sources */,
 				95ABEF931DB2C1F300F0BF4D /* AppDelegate.swift in Sources */,
@@ -879,7 +872,6 @@
 				95ABF03C1DB2C3F900F0BF4D /* ClefSprite.swift in Sources */,
 				95ABF0511DB2C3F900F0BF4D /* NoteSprite.swift in Sources */,
 				95ABF04C1DB2C3F900F0BF4D /* MainMenuViewController.swift in Sources */,
-				95ABF0431DB2C3F900F0BF4D /* HighScoreScene.swift in Sources */,
 				95ABF0421DB2C3F900F0BF4D /* GameViewController.swift in Sources */,
 				95ABF03B1DB2C3F900F0BF4D /* Clef.swift in Sources */,
 				95ABF04D1DB2C3F900F0BF4D /* MajorKeySignature.swift in Sources */,

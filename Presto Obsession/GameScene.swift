@@ -51,21 +51,28 @@ class GameScene: SKScene {
         scoreNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
         scoreNode.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
         scoreNode.position = CGPoint(
-            x: self.size.width - (scoreNode.frame.width * 2 + 50),
+            x: self.size.width - scoreNode.frame.width,
             y: 100 + ((staffNode.size.height/2)+staffNode.position.y))
+        scoreNode.text = "0"
+        scoreNode.zPosition = 1.0
         
-        highScoreNode.fontColor = UIColor.black
+        highScoreNode.fontColor = UIColor.blue
         highScoreNode.fontSize = 50
         highScoreNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
         highScoreNode.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
         highScoreNode.position = CGPoint(
-            x: self.size.width - scoreNode.frame.width,
-            y: 100 + ((staffNode.size.height/2)+staffNode.position.y))
+            x: self.size.width - highScoreNode.frame.width,
+            y: scoreNode.frame.height + scoreNode.position.y)
+        highScoreNode.zPosition = 1.5
 
         addChild(staffNode)
         addChild(noteZone)
         addChild(scoreNode)
         addChild(highScoreNode)
+    }
+    
+    func noteZoneFrame() -> CGRect {
+        return self.noteZone.frame
     }
     
     func pressNoteZone(){
@@ -84,6 +91,6 @@ class GameScene: SKScene {
     }
     
     func setHighScoreText(_ newScore:String){
-        scoreNode.text = newScore
+        highScoreNode.text = newScore
     }
 }

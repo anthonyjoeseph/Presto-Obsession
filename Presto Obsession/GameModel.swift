@@ -27,13 +27,16 @@ class GameModel: NSObject{
         didSet {
             if(self.score > self.highScore){
                 self.highScore = self.score
-                self.gamePersistence.updateHighScore(self.highScore)
-                self.highScoreUpdated()
             }
             self.scoreUpdated()
         }
     }
-    fileprivate var highScore:Int
+    fileprivate var highScore:Int{
+        didSet {
+            self.highScoreUpdated()
+            self.gamePersistence.updateHighScore(self.highScore)
+        }
+    }
     var currentTimer:Timer = Timer()
     
     fileprivate let gamePersistence:GamePersistence
@@ -61,6 +64,7 @@ class GameModel: NSObject{
         self.musicElements = MusicElements(difficultyLevel: self.difficultyLevel)
         
         self.gamePersistence = GamePersistence()
+        
         self.score = 0
         self.highScore = self.gamePersistence.savedHighScore()
         
@@ -97,6 +101,11 @@ class GameModel: NSObject{
     }
     func stopTimer(){
         self.currentTimer.invalidate()
+    }
+    
+    func initializeScores(){
+        self.score = 0
+        self.highScore = self.gamePersistence.savedHighScore()
     }
     
     func getScore() -> Int{

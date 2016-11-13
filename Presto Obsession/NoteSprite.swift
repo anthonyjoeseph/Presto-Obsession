@@ -16,12 +16,14 @@ class NoteSprite: SKSpriteNode, StaffElementNode{
     var incrementsFromMiddle:Int
     var noteTexture:SKTexture?
     let noteLetterBuffer:CGFloat = 20
+    var endXPosition:CGFloat = 0
     
-    init(note:Note, incrementsFromMiddle:Int, ledgerLines:LedgerLines?){
+    init(note:Note, incrementsFromMiddle:Int, ledgerLines:LedgerLines?, endXPosition:CGFloat){
         self.note = note
         self.incrementsFromMiddle = incrementsFromMiddle
         self.ledgerLines = ledgerLines
         self.noteTexture = SKTexture(imageNamed:"WholeNote")
+        self.endXPosition = endXPosition
         super.init(texture: self.noteTexture!, color: UIColor.clear, size: self.noteTexture!.size())
     }
     
@@ -130,8 +132,7 @@ class NoteSprite: SKSpriteNode, StaffElementNode{
     func positionOnStaff(_ staffSize: CGSize, ledgerLineSpace: CGFloat) -> CGPoint{
         let middlePosition = staffSize.height/2
         let noteSpriteY:CGFloat = middlePosition + CGFloat(self.incrementsFromMiddle) * (ledgerLineSpace/2)
-        //return CGPoint(x:staffSize.width+(self.size.width/2), y:noteSpriteY)
-        return CGPoint(x: -self.size.width/2, y:noteSpriteY)
+        return CGPoint(x: self.endXPosition, y:noteSpriteY)
     }
     
     func acceptStaffDimensions(_ staffSize:CGSize, ledgerLineSpace:CGFloat){

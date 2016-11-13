@@ -20,7 +20,8 @@ class TempoMarkingSprite:SKSpriteNode, StaffElementNode{
         let qNoteSprite = NoteSprite(
             note: Note(pitch: Pitch(absolutePitch: 0), rhythm: Rhythm.quarter),
             incrementsFromMiddle: 0,
-            ledgerLines: nil)
+            ledgerLines: nil,
+            endXPosition: 0)
         qNoteSprite.addStem(true)
         qNoteSprite.position = CGPoint(x: 0, y: 0)
         self.addChild(qNoteSprite)
